@@ -26,6 +26,14 @@ app/mcp/
 
 ## Getting Started
 
+### Setup
+
+1. **Create environment file**
+   ```bash
+   cp ./envs/.env.example ./envs/.env
+   # Edit .env file with your configuration
+   ```
+
 ### Installation
 
 ```bash
