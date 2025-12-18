@@ -1,11 +1,13 @@
 services:
   db:
-    image: postgres:18
+    image: postgres:17
     container_name: healthion-api-postgres
+    env_file:
+      - ./envs/.env
     environment:
-      POSTGRES_DB: healthion
-      POSTGRES_USER: healthion
-      POSTGRES_PASSWORD: healthion
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -15,7 +17,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: scripts/start/app.sh
+    entrypoint: ["./prestart.sh"]
+    command: ["scripts/start/app.sh"]
     container_name: healthion-api-app
     env_file:
       - ./envs/.env

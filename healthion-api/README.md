@@ -11,7 +11,7 @@ A FastAPI application with PostgreSQL database support, containerized with Docke
 
 1. **Create environment file**
    ```bash
-   cp ./config/.env.example ./config/.env
+   cp ./envs/.env.example ./envs/.env
    # Edit .env file with your configuration
    ```
 
