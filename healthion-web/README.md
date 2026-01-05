@@ -1,129 +1,120 @@
-# React Shadcn Starter
+# Healthion Web
 
-React + Vite + TypeScript template for building apps with shadcn/ui.
+React frontend for displaying wearable health data from [Open Wearables](https://openwearables.io).
 
-## Getting Started
+## What It Does
+
+- **Dashboard** - Overview of all health metrics at a glance
+- **Heart Rate** - Detailed heart rate timeseries and trends
+- **Workouts** - Training history with duration, calories, heart rate
+- **Sleep** - Sleep sessions with phases and quality metrics
+- **Activity** - Daily activity summaries (steps, calories, distance)
+- **Recovery** - HRV trends and recovery scores
+- **Body** - Weight, BMI, and body composition
+- **Settings** - Connect/disconnect wearable devices via OAuth
+
+## Prerequisites
+
+- Node.js 18+
+- [Auth0](https://auth0.com) account
+- Running [healthion-api](../healthion-api) backend
+
+## Setup
+
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Configure environment**
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Set environment variables**
+   ```env
+   VITE_AUTH0_DOMAIN=your-domain.auth0.com
+   VITE_AUTH0_CLIENT_ID=your-client-id
+   VITE_AUTH0_AUDIENCE=your-api-audience
+   VITE_API_URL=http://localhost:8000
+   ```
+
+## Auth0 Configuration
+
+1. Create a **Single Page Application** in [Auth0 Dashboard](https://manage.auth0.com/)
+2. Configure allowed URLs:
+   - **Callback URLs**: `http://localhost:5173`
+   - **Logout URLs**: `http://localhost:5173`
+   - **Web Origins**: `http://localhost:5173`
+
+## Running
 
 ```bash
-npx degit hayyi2/react-shadcn-starter my-project
-cd my-project
-npm install
+# Development server
 npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
-## Authentication with Auth0
+Access the app at http://localhost:5173
 
-This starter includes Auth0 integration for secure authentication. To set it up:
+## Tech Stack
 
-### 1. Create an Auth0 Application
-
-1. Go to [Auth0 Dashboard](https://manage.auth0.com/)
-2. Create a new **Single Page Application**
-3. Configure the following settings:
-   - **Allowed Callback URLs**: `http://localhost:3000`
-   - **Allowed Logout URLs**: `http://localhost:3000`
-   - **Allowed Web Origins**: `http://localhost:3000`
-
-### 2. Configure Environment Variables
-
-Update the `.env` file with your Auth0 credentials:
-
-```env
-# Auth0 Configuration
-VITE_AUTH0_DOMAIN=your-auth0-domain.auth0.com
-VITE_AUTH0_CLIENT_ID=your-auth0-client-id
-VITE_AUTH0_AUDIENCE=https://your-auth0-domain.auth0.com/api/v2/
-```
-
-Replace the placeholder values with your actual Auth0 application settings.
-
-### 3. Features Included
-
-- 🔐 **Secure Authentication**: Login/logout with Auth0
-- 🛡️ **Protected Routes**: Dashboard and Sample pages require authentication
-- 👤 **User Profile**: View user information and manage account
-- 🎨 **UI Integration**: Seamless integration with shadcn/ui components
-
-### 4. Usage
-
-```tsx
-import { useAuth } from '@/hooks/use-auth'
-
-function MyComponent() {
-  const { user, isAuthenticated, login, logout } = useAuth()
-
-  if (!isAuthenticated) {
-    return <button onClick={login}>Sign In</button>
-  }
-
-  return (
-    <div>
-      <p>Welcome, {user?.name}!</p>
-      <button onClick={logout}>Sign Out</button>
-    </div>
-  )
-}
-```
-
-## Getting Done
-
-- [x] Single page app with navigation and responsif layout
-- [x] Customable configuration `/config`
-- [x] Simple starting page/feature `/pages`
-- [x] Github action deploy github pages
-- [x] Auth0 authentication integration
-
-## Deploy `gh-pages`
-
-- change `basenameProd` in `/vite.config.ts`
-- create deploy key `GITHUB_TOKEN` in github `/settings/keys`
-- commit and push changes code
-- setup gihub pages to branch `gh-pages`
-- run action `Build & Deploy`
-
-### Auto Deploy
-
-- change file `.github/workflows/build-and-deploy.yml`
-- Comment on `workflow_dispatch`
-- Uncomment on `push`
-
-```yaml
-# on:
-#   workflow_dispatch:
-on:
-  push:
-    branches: ["main"]
-```
-
-## Features
-
-- React + Vite + TypeScript
-- Tailwind CSS
-- [shadcn-ui](https://github.com/shadcn-ui/ui/)
-- [react-router-dom](https://www.npmjs.com/package/react-router-dom)
-- [Auth0](https://auth0.com/) authentication
+- **React 18** + TypeScript
+- **Vite** - Build tool
+- **Tailwind CSS** - Styling
+- **shadcn/ui** - UI components
+- **React Router** - Navigation
+- **Auth0** - Authentication
+- **Recharts** - Data visualization
 
 ## Project Structure
 
-```md
-react-shadcn-starter/
-├── public/            # Public assets
-├── src/               # Application source code
-│   ├── components/    # React components
-│   ├── context/       # contexts components
-│   ├── config/        # Config data
-│   ├── hook/          # Custom hooks
-│   ├── lib/           # Utility functions
-│   ├── pages/         # pages/features components
-│   ├── App.tsx        # Application entry point
-│   ├── index.css      # Main css and tailwind configuration
-│   ├── main.tsx       # Main rendering file
-│   └── Router.tsx     # Routes component
-├── index.html         # HTML entry point
-├── tsconfig.json      # TypeScript configuration
-└── vite.config.ts     # Vite configuration
+```
+healthion-web/
+├── src/
+│   ├── components/        # Reusable UI components
+│   ├── config/            # App configuration, menu
+│   ├── hooks/             # Custom React hooks
+│   │   ├── use-auth.ts        # Auth0 integration
+│   │   └── use-wearables.ts   # Open Wearables data hooks
+│   ├── lib/               # API client, utilities
+│   ├── pages/             # Page components
+│   │   ├── Dashboard.tsx
+│   │   ├── HeartRate.tsx
+│   │   ├── Workouts.tsx
+│   │   ├── Sleep.tsx
+│   │   ├── Activity.tsx
+│   │   ├── Recovery.tsx
+│   │   ├── Body.tsx
+│   │   └── Settings.tsx
+│   └── Router.tsx         # Route definitions
+└── public/                # Static assets
 ```
 
-## License
+## Available Hooks
 
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/hayyi2/react-shadcn-starter/blob/main/LICENSE) file for details.
+```tsx
+import { 
+  useWearableProviders,
+  useWearableConnections,
+  useWearableTimeseries,
+  useWearableWorkouts,
+  useSleepSessions,
+  useActivitySummary,
+  useSleepSummary,
+  useRecoverySummary,
+  useBodySummary
+} from '@/hooks/use-wearables'
+
+// Example: Fetch heart rate data
+const { data, loading, error } = useWearableTimeseries({
+  types: ['heart_rate'],
+  startDate: '2024-01-01',
+  endDate: '2024-01-31'
+})
+```

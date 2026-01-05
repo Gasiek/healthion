@@ -1,100 +1,172 @@
 <div align="center">
   <img src="https://cdn.prod.website-files.com/66a1237564b8afdc9767dd3d/66df7b326efdddf8c1af9dbb_Momentum%20Logo.svg" height="64">
 
-  [![Contact us](https://img.shields.io/badge/Contact%20us-AFF476.svg)](mailto:hello@themomentum.ai?subject=Terraform%20Modules)
+  [![Contact us](https://img.shields.io/badge/Contact%20us-AFF476.svg)](mailto:hello@themomentum.ai?subject=Healthion)
   [![Check Momentum](https://img.shields.io/badge/Check%20Momentum-1f6ff9.svg)](https://themomentum.ai)
+  [![Open Wearables](https://img.shields.io/badge/Open%20Wearables-8B5CF6.svg)](https://openwearables.io)
   [![MIT License](https://img.shields.io/badge/License-MIT-636f5a.svg?longCache=true)](LICENSE)
 </div>
 
 # Healthion
 
-Take charge of your wearable data with AI-powered health insights. One central repository for all your wearable data, leveraging cutting-edge AI models (including local ones) to provide personalized health analytics and actionable insights. Transform your fitness trackers into intelligent health companions.
+A sample health application demonstrating integration with **[Open Wearables](https://openwearables.io)** - a platform that enables easy collection of wearable data from various manufacturers in one unified API.
 
-## Motivation 
+## What It Does
 
-At Momentum, we've worked on numerous projects that utilized wearable device data. We know that integrations can be challenging. We've developed both completely custom solutions for integrating wearable data and leveraged SaaS platforms that provide such integrations. Based on these experiences, we decided to create something that will be community-driven. We want to enable developers to build AI agents based on wearable data. We want to enable building solutions for both individuals and professionals. 
+Healthion showcases how to build a complete health dashboard that displays data from multiple wearable devices through Open Wearables integration. All wearable data flows through Open Wearables API, which handles:
 
-## Core Features
-- 📱 **Easy Data Import**: Connect your favorite fitness trackers and health apps in one place
-- 🧠 **Smart Data Processing**: Automatically organize and clean your health data for better insights
-- 🤖 **AI-Ready Format**: Your data is prepared for AI analysis, making it easy to get personalized health recommendations
-- 💬 **AI Assistant Integration**: Connect with AI tools through MCP Server to ask questions about your health data
-- 📊 **Beautiful Dashboard**: View and explore your health data through an intuitive web interface
+- **Device connections** via OAuth (Garmin, Polar, Suunto, Withings, Whoop, Oura)
+- **Data normalization** across different device formats
+- **Deduplication** when data comes from multiple sources
 
-## Ecosystem
+## Integrated Data Types
 
-### Backend
+### Timeseries Data (47 types)
+| Category | Data Types |
+|----------|------------|
+| **Heart** | Heart Rate, HRV (RMSSD/SDNN), Blood Pressure |
+| **Activity** | Steps, Calories, Distance, Floors Climbed |
+| **Body** | Weight, Body Fat %, BMI, Body Temperature |
+| **Respiratory** | SpO2, Respiratory Rate, VO2 Max |
+| **Blood** | Blood Glucose, Blood Oxygen |
+| **Sleep** | Sleep stages, Sleep score |
+| **Other** | Stress, Energy, Mindfulness minutes, and more... |
 
-**healthion-api** - FastAPI-based REST API that serves as the central data hub for wearable health data. Features comprehensive data models for heart rate, workouts, active energy, and user management. Includes authentication, data import services, and unified endpoints for accessing normalized health metrics. Built with PostgreSQL, SQLAlchemy, and Alembic for robust data persistence and migration management. See [healthion-api/README.md](healthion-api/README.md) for detailed setup and usage instructions. 
+### Event-Based Data
+- **Workouts** - All training types with duration, calories, heart rate zones
+- **Sleep Sessions** - Sleep phases, quality metrics, interruptions
 
-### Frontend
+### Daily Summaries
+- **Activity** - Steps, calories burned, active minutes, distance
+- **Sleep** - Total sleep time, phases, efficiency, score
+- **Recovery** - HRV trends, recovery score, readiness
+- **Body** - Weight, BMI, body composition metrics
 
-**healthion-web** - Modern React-based web application built with Vite, TypeScript, and shadcn/ui components. Features comprehensive health data visualization with dedicated pages for heart rate analytics, workout tracking, and data import functionality. Includes Auth0 authentication, responsive design, and seamless API integration with the backend. Built with Tailwind CSS for styling and React Router for navigation. See [healthion-web/README.md](healthion-web/README.md) for detailed setup and usage instructions. 
+## Architecture
 
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│  healthion-web  │────▶│  healthion-api  │────▶│  Open Wearables │
+│  (React + TS)   │     │    (FastAPI)    │     │      API        │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+                                                        │
+                                                        ▼
+                                               ┌─────────────────┐
+                                               │ Garmin, Polar,  │
+                                               │ Suunto, Withings│
+                                               │ Whoop, Oura...  │
+                                               └─────────────────┘
+```
 
-### MCP Server
+### Backend (healthion-api)
 
-**healthion-mcp** - Model Context Protocol (MCP) server that provides AI assistants with access to health and fitness data tools. Built with FastMCP, it serves as a bridge between AI agents and the Healthion health data ecosystem. Features modular architecture with dedicated tools for heart rate data, workouts, and fitness metrics. Enables AI assistants to query and interact with user health data through standardized MCP protocol with HTTP transport optimization for AI agent integrations. See [healthion-mcp/README.md](healthion-mcp/README.md) for detailed setup and usage instructions.
+FastAPI-based REST API that:
+- Proxies requests to Open Wearables API
+- Handles user authentication (Auth0)
+- Automatically registers users with Open Wearables on first login
+- Manages OAuth flows for device connections
 
+See [healthion-api/README.md](healthion-api/README.md) for setup instructions.
+
+### Frontend (healthion-web)
+
+React + TypeScript application with:
+- **Dashboard** - Overview of all health metrics
+- **Heart Rate** - Detailed heart rate timeseries and trends
+- **Workouts** - Training history and statistics
+- **Sleep** - Sleep sessions and quality metrics
+- **Activity** - Daily activity summaries
+- **Recovery** - HRV and recovery metrics
+- **Body** - Weight and body composition
+- **Settings** - Connect/disconnect wearable devices
+
+Built with Vite, Tailwind CSS, and shadcn/ui components.
+
+See [healthion-web/README.md](healthion-web/README.md) for setup instructions.
 
 ## Getting Started
 
-To get started with Healthion, each component needs to be set up independently. Please refer to the individual README files for detailed setup instructions:
+### Prerequisites
 
-- **Backend API**: See [healthion-api/README.md](healthion-api/README.md) for API setup and configuration
-- **Frontend Web App**: See [healthion-web/README.md](healthion-web/README.md) for web application setup
-- **MCP Server**: See [healthion-mcp/README.md](healthion-mcp/README.md) for MCP server configuration
+- Docker & Docker Compose
+- Node.js 18+
+- [Open Wearables](https://openwearables.io) API key
+- [Auth0](https://auth0.com) account for authentication
 
-**Future Plans**: We're working on a unified Docker setup that will run all components together with a single command, making the initial setup much simpler. Stay tuned for updates! 🐳
+### Quick Start
 
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/the-momentum/healthion.git
+   cd healthion
+   ```
 
-## Roadmap 
+2. **Set up the backend**
+   ```bash
+   cd healthion-api
+   cp envs/.env.example envs/.env
+   # Edit envs/.env with your Open Wearables API key and Auth0 config
+   docker-compose up -d
+   ```
 
-We're just getting started, but the vision is ambitious! We're currently working on:
+3. **Set up the frontend**
+   ```bash
+   cd healthion-web
+   cp .env.example .env
+   # Edit .env with your Auth0 config
+   npm install
+   npm run dev
+   ```
 
-**🔌 Wearable Integrations**
-- [ ] **Garmin Support**: Full integration with Garmin Connect API
-- [ ] **Oura Ring**: Sleep and recovery data synchronization
-- [ ] **WHOOP**: Advanced fitness and recovery metrics
+4. **Connect your wearables**
+   - Open http://localhost:5173
+   - Log in with Auth0
+   - Go to Settings and connect your devices
 
-**📊 Data Processing**
-- [ ] **Smart Normalization**: Automatic data standardization across different devices
-- [ ] **Deduplication Engine**: Remove duplicate entries from multiple sources
-- [ ] **Data Quality Scoring**: Assess and improve data reliability
+## Environment Variables
 
-**🤖 AI & Analytics**
-- [ ] **Pre-built AI Insights**: Local and cloud-based health insights
-- [ ] **Predictive Analytics**: Trend analysis and health predictions
-- [ ] **Personalized Recommendations**: AI-driven health suggestions
-- [ ] **Anomaly Detection**: Identify unusual patterns in health data
+### Backend (healthion-api)
+| Variable | Description |
+|----------|-------------|
+| `OPEN_WEARABLES_API_KEY` | Your Open Wearables API key |
+| `AUTH0_DOMAIN` | Auth0 domain |
+| `AUTH0_AUDIENCE` | Auth0 API audience |
 
-**📚 Documentation & Examples**
-- [ ] **Comprehensive Documentation**: Detailed guides and API references
-- [ ] **Use Case Examples**: Real-world implementation scenarios
-- [ ] **Tutorial Series**: Step-by-step guides for developers
-- [ ] **Community Showcase**: Featured projects and integrations
+### Frontend (healthion-web)
+| Variable | Description |
+|----------|-------------|
+| `VITE_AUTH0_DOMAIN` | Auth0 domain |
+| `VITE_AUTH0_CLIENT_ID` | Auth0 client ID |
+| `VITE_AUTH0_AUDIENCE` | Auth0 API audience |
+| `VITE_API_URL` | Backend API URL |
 
-**🚀 Platform Features**
-- [ ] **Unified Docker Setup**: One-command deployment for all components
-- [ ] **Advanced Dashboard**: Enhanced data visualization and analytics
-- [ ] **Mobile App**: Native mobile experience for health data
-- [ ] **API Rate Limiting**: Production-ready API management 
+## What We Learned
 
-## Contribute
+During implementation, we encountered several challenges worth documenting:
 
-🚀 **Join the Future of Health Data & AI!** 
+### 1. 🔑 API Key Configuration
+**Problem:** 401 Unauthorized errors when creating users in Open Wearables.
 
-The world of wearables and AI is evolving at breakneck speed. New devices hit the market monthly, AI models become more powerful by the day, and the possibilities for personalized health insights are expanding exponentially. 
+**Solution:** Ensure `OPEN_WEARABLES_API_KEY` is correctly set and restart Docker containers to load new environment variables.
 
-**We're looking for contributors who are passionate about:**
-- 🔌 **Wearable Integrations**: Help us support the latest fitness trackers and health devices
-- 🤖 **AI & ML**: Improve data processing, normalization, and AI-ready data formats
-- 🎨 **User Experience**: Make health data more accessible and beautiful
-- 📚 **Documentation**: Help others understand and use our platform
-- 🧪 **Testing**: Ensure reliability across different devices and scenarios
+### 2. 🔇 Silent Error Handling
+**Problem:** Errors from Open Wearables were being caught and silently ignored, making debugging difficult.
 
-**Every contribution matters** - from fixing bugs to adding new wearable support, from improving documentation to suggesting new features. The wearable and AI landscape changes rapidly, and your input helps us stay ahead of the curve.
+**Solution:** Added explicit `OpenWearablesConfigurationError` exception and improved logging. Return HTTP 503 when Open Wearables is not configured.
 
-Need help? Looking for guidance on use cases or implementation? Don't hesitate to ask your question in our [GitHub discussion forum](https://github.com/the-momentum/healthion/discussions)! You'll also find interesting use cases, tips, and community insights there.
+### 3. 👥 Duplicate Users (Race Condition)
+**Problem:** Multiple simultaneous requests to authenticate created duplicate users in Open Wearables (5+ accounts for the same email).
 
+**Cause:** Each concurrent request checked if user exists, got `None`, and created a new user - all before any creation completed.
 
+**Solution:** Implemented per-email `asyncio.Lock` in the Open Wearables client to serialize user creation requests.
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+---
+
+<div align="center">
+  Built with ❤️ by <a href="https://themomentum.ai">Momentum</a>
+</div>
