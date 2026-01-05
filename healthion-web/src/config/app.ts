@@ -34,7 +34,7 @@ export const appConfig: AppConfigType = {
         audience: import.meta.env.VITE_AUTH0_AUDIENCE ?? "healthion-api",
     },
     api: {
-        baseUrl: import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8001/api/v1",
+        baseUrl: import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000/api/v1",
     },
 }
 

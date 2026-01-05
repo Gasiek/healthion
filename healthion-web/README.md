@@ -36,7 +36,9 @@ React frontend for displaying wearable health data from [Open Wearables](https:/
    VITE_AUTH0_DOMAIN=your-domain.auth0.com
    VITE_AUTH0_CLIENT_ID=your-client-id
    VITE_AUTH0_AUDIENCE=your-api-audience
-   VITE_API_URL=http://localhost:8000
+   
+   # Optional - defaults to http://localhost:8000/api/v1
+   # VITE_API_BASE_URL=http://your-api-host/api/v1
    ```
 
 ## Auth0 Configuration
