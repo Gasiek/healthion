@@ -138,7 +138,7 @@ See [healthion-web/README.md](healthion-web/README.md) for setup instructions.
 | `VITE_AUTH0_DOMAIN` | Auth0 domain |
 | `VITE_AUTH0_CLIENT_ID` | Auth0 client ID |
 | `VITE_AUTH0_AUDIENCE` | Auth0 API audience |
-| `VITE_API_BASE_URL` | *(Optional)* Backend API URL, defaults to `http://localhost:8000/api/v1` |
+| `VITE_API_BASE_URL` | *(Optional)* Backend API URL, defaults to `http://localhost:8001/api/v1` |
 
 ## What We Learned
 

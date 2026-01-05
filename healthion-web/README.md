@@ -37,7 +37,7 @@ React frontend for displaying wearable health data from [Open Wearables](https:/
    VITE_AUTH0_CLIENT_ID=your-client-id
    VITE_AUTH0_AUDIENCE=your-api-audience
    
-   # Optional - defaults to http://localhost:8000/api/v1
+   # Optional - defaults to http://localhost:8001/api/v1
    # VITE_API_BASE_URL=http://your-api-host/api/v1
    ```
 

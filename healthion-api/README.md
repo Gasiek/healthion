@@ -93,9 +93,9 @@ uv run fastapi dev app/main.py --reload
 
 ## Access
 
-- API: http://localhost:8000
-- Swagger Docs: http://localhost:8000/docs
-- OpenAPI JSON: http://localhost:8000/openapi.json
+- API: http://localhost:8001
+- Swagger Docs: http://localhost:8001/docs
+- OpenAPI JSON: http://localhost:8001/openapi.json
 
 ## Project Structure
 
