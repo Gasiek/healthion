@@ -47,6 +47,10 @@ class Settings(BaseSettings):
     auth0_issuer: str = ""
     auth0_algorithms: list[str] = ["RS256"]
 
+    # OPEN WEARABLES SETTINGS
+    open_wearables_api_url: str = "http://localhost:8000"
+    open_wearables_api_key: str = ""
+
     @property
     def db_uri(self) -> str:
         return (

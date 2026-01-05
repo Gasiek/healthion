@@ -126,7 +126,7 @@ export function AppHeader() {
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem asChild>
-                                        <Link to="/pages/profile">Profile</Link>
+                                        <Link to="/profile">Profile</Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem onClick={logout}>
                                         Log out

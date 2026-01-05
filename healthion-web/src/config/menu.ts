@@ -1,8 +1,12 @@
 import {
     Gauge,
-    Upload,
     Heart,
     Activity,
+    Moon,
+    Footprints,
+    Zap,
+    Scale,
+    Settings,
     LucideIcon
 } from 'lucide-react'
 
@@ -23,17 +27,37 @@ export const mainMenu: MenuType = [
     },
     {
         title: 'Heart Rate',
-        url: '/pages/heart-rate',
+        url: '/heart-rate',
         icon: Heart
     },
     {
         title: 'Workouts',
-        url: '/pages/workouts',
+        url: '/workouts',
         icon: Activity
     },
     {
-        title: 'Connect Data',
-        url: '/pages/import',
-        icon: Upload
+        title: 'Sleep',
+        url: '/sleep',
+        icon: Moon
+    },
+    {
+        title: 'Activity',
+        url: '/activity',
+        icon: Footprints
+    },
+    {
+        title: 'Recovery',
+        url: '/recovery',
+        icon: Zap
+    },
+    {
+        title: 'Body',
+        url: '/body',
+        icon: Scale
+    },
+    {
+        title: 'Settings',
+        url: '/settings',
+        icon: Settings
     },
 ]

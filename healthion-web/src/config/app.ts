@@ -22,11 +22,11 @@ export const appConfig: AppConfigType = {
     name: import.meta.env.VITE_APP_NAME ?? "Healthion",
     github: {
         title: "Healthion Web",
-        url: "https://github.com/your-username/healthion-web",
+        url: "https://github.com/gasiek/healthion",
     },
     author: {
         name: "Healthion Team",
-        url: "https://github.com/your-username/",
+        url: "https://github.com/gasiek/",
     },
     auth0: {
         domain: import.meta.env.VITE_AUTH0_DOMAIN ?? "",
@@ -34,7 +34,7 @@ export const appConfig: AppConfigType = {
         audience: import.meta.env.VITE_AUTH0_AUDIENCE ?? "healthion-api",
     },
     api: {
-        baseUrl: import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000/api/v1",
+        baseUrl: import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8001/api/v1",
     },
 }
 

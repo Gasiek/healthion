@@ -32,3 +32,4 @@ class UserCreate(BaseModel):
 
 class UserUpdate(BaseModel):
     email: EmailStr | None = None
+    open_wearables_user_id: UUID | None = None

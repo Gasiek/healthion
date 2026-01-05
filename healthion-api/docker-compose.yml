@@ -2,14 +2,12 @@ services:
   db:
     image: postgres:17
     container_name: healthion-api-postgres
-    env_file:
-      - ./envs/.env
     environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: healthion
+      POSTGRES_USER: healthion
+      POSTGRES_PASSWORD: healthion
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -24,8 +22,16 @@ services:
       - ./envs/.env
     environment:
       - DB_HOST=db
+      - DB_PORT=5432
+      - BACKEND_CORS_ALLOW_ALL=true
+      - OPEN_WEARABLES_API_URL=http://host.docker.internal:8000
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
-      - "8000:8000"
+      - "8001:8000"
     depends_on:
       - db
     volumes:
