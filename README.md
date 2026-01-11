@@ -144,17 +144,25 @@ See [healthion-web/README.md](healthion-web/README.md) for setup instructions.
 
 During implementation, we encountered several challenges worth documenting:
 
-### 1. 🔑 API Key Configuration
+### 1. 🔐 Auth0 Setup
+**Problem:** CORS errors or "Unknown host" when clicking Sign In.
+
+**Solution:** In Auth0 Dashboard:
+1. Create a **Single Page Application** → copy Domain and Client ID
+2. Add `http://localhost:5173` to **Allowed Callback URLs**, **Allowed Logout URLs**, and **Allowed Web Origins**
+3. Set `VITE_AUTH0_DOMAIN` to domain only (e.g., `dev-xxx.us.auth0.com`), not a full URL
+
+### 2. 🔑 API Key Configuration
 **Problem:** 401 Unauthorized errors when creating users in Open Wearables.
 
 **Solution:** Ensure `OPEN_WEARABLES_API_KEY` is correctly set and restart Docker containers to load new environment variables.
 
-### 2. 🔇 Silent Error Handling
+### 3. 🔇 Silent Error Handling
 **Problem:** Errors from Open Wearables were being caught and silently ignored, making debugging difficult.
 
 **Solution:** Added explicit `OpenWearablesConfigurationError` exception and improved logging. Return HTTP 503 when Open Wearables is not configured.
 
-### 3. 👥 Duplicate Users (Race Condition)
+### 4. 👥 Duplicate Users (Race Condition)
 **Problem:** Multiple simultaneous requests to authenticate created duplicate users in Open Wearables (5+ accounts for the same email).
 
 **Cause:** Each concurrent request checked if user exists, got `None`, and created a new user - all before any creation completed.
