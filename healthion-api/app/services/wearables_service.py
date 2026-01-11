@@ -152,14 +152,14 @@ class WearablesService:
         connections_data = await self.client.get_user_connections(
             user_id=user.open_wearables_user_id
         )
-        
+
         connections = [
             WearableConnection(
                 id=UUID(c.get("id", "")),
                 provider=c.get("provider", ""),
-                connected_at=c.get("connected_at"),
-                is_active=c.get("is_active", True),
-                last_sync=c.get("last_sync"),
+                connected_at=c.get("created_at"),
+                is_active=c.get("status") == "active",
+                last_sync=c.get("last_synced_at"),
             )
             for c in connections_data
         ]
@@ -318,7 +318,7 @@ class WearablesService:
             end_date=query_params.end_date,
             limit=query_params.limit,
         )
-        
+
         sessions = [
             SleepSession(
                 id=s.get("id"),
